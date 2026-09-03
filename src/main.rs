@@ -9,7 +9,7 @@ enum OptimiserError {
 fn main() {
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
-        println!("Please provide a file to analyse.");
+        println!("Please provide a file to optimise.");
         return;
     }
     let mut program: CheckedProgram = match get_checked_program_from_file(&args[1]) {
