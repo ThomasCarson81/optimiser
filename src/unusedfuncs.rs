@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 
 use syntax::{
-    ast::Statement,
+    ast::{Expression, Statement},
     functions::{FunctionBody, FunctionId, FunctionTable},
 };
 
@@ -122,14 +122,37 @@ fn explore_statement(
 }
 
 fn explore_expression(
-    expression: &syntax::ast::Expression,
+    expression: &Expression,
     function_table: &FunctionTable,
     used: &mut HashSet<FunctionId>,
 ) {
     match expression {
-        syntax::ast::Expression::ResolvedFunctionCall { function_id, .. } => {
+        Expression::ResolvedFunctionCall {
+            function_id,
+            arguments,
+        } => {
+            for arg in arguments {
+                explore_expression(arg, function_table, used);
+            }
             explore_function(function_id, function_table, used);
         }
-        _ => {}
+        Expression::BinaryOp {
+            left,
+            operator: _,
+            right,
+        } => {
+            explore_expression(left, function_table, used);
+            explore_expression(right, function_table, used);
+        }
+        Expression::UnaryOp {
+            operator: _,
+            operand,
+        } => {
+            explore_expression(operand, function_table, used);
+        }
+        Expression::Identifier(_) | Expression::Literal(_) => {}
+        Expression::UnresolvedFunctionCall { .. } => {
+            unreachable!("Unresolved function calls should not be present in the checked AST")
+        }
     }
 }
