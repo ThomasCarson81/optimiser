@@ -140,6 +140,7 @@ fn explore_expression(
             left,
             operator: _,
             right,
+            inferred_type: _,
         } => {
             explore_expression(left, function_table, used);
             explore_expression(right, function_table, used);
@@ -147,6 +148,7 @@ fn explore_expression(
         Expression::UnaryOp {
             operator: _,
             operand,
+            inferred_type: _,
         } => {
             explore_expression(operand, function_table, used);
         }
