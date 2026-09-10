@@ -25,7 +25,7 @@ fn explore_function(
 
     used.insert(function_id.clone());
 
-    if let Some(function) = function_table.get(function_id.clone()) {
+    if let Some(function) = function_table.get(function_id) {
         match &function.implementation {
             syntax::functions::FunctionImplementation::Oxide(body) => {
                 explore_function_body(body.clone(), function_table, used);
