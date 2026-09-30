@@ -118,7 +118,7 @@ fn explore_statement(
         Statement::Break => {}
         Statement::Continue => {}
         Statement::Pass => {}
-        Statement::TypeDefinition(type_definition) => todo!(),
+        Statement::TypeDefinition(_) => todo!(),
     }
 }
 
